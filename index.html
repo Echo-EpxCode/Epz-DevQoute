@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quote Generator | Freelance Web Developer</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  body { font-family: 'Inter', sans-serif; }
+  .gradient-text {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .feature-item {
+    transition: all 0.2s ease;
+  }
+  .feature-item:hover {
+    transform: translateY(-1px);
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 backdrop-blur-sm bg-white/90">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold gradient-text">DevQuote Pro</h1>
+            <p class="text-xs text-slate-500">Freelance Web Developer</p>
+          </div>
+        </div>
+        <div class="hidden sm:flex items-center gap-2 text-sm font-medium text-slate-600">
+          <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+          Available for Projects
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Left: Forms -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Client Details Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center gap-2 mb-5">
+            <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <h2 class="text-lg font-semibold text-slate-900">Client Information</h2>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="clientName" class="block text-sm font-medium text-slate-700 mb-1.5">Client Name *</label>
+              <input type="text" id="clientName" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="Juan Dela Cruz">
+            </div>
+            <div>
+              <label for="companyName" class="block text-sm font-medium text-slate-700 mb-1.5">Company</label>
+              <input type="text" id="companyName" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="Dela Cruz Enterprises">
+            </div>
+            <div>
+              <label for="clientEmail" class="block text-sm font-medium text-slate-700 mb-1.5">Email *</label>
+              <input type="email" id="clientEmail" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="juan@example.com">
+            </div>
+            <div>
+              <label for="quoteDate" class="block text-sm font-medium text-slate-700 mb-1.5">Quote Date</label>
+              <input type="date" id="quoteDate" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Features Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+              </div>
+              <h2 class="text-lg font-semibold text-slate-900">Project Features</h2>
+            </div>
+            <div class="text-sm font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">₱55/hour</div>
+          </div>
+
+          <div id="defaultFeatures" class="space-y-3 mb-6">
+            <!-- Features populated by JS -->
+          </div>
+
+          <!-- Add Custom Feature -->
+          <div class="border-t border-slate-100 pt-5">
+            <h3 class="text-sm font-semibold text-slate-700 mb-3">Add Custom Feature</h3>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <input type="text" id="customFeatureName" class="flex-1 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="Feature name">
+              <input type="number" id="customFeatureHours" min="0" step="0.5" class="w-full sm:w-32 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="Hours">
+              <button onclick="addCustomFeature()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition shadow-sm hover:shadow-md">
+                Add
+              </button>
+            </div>
+          </div>
+
+          <div id="customFeatures" class="space-y-3 mt-4">
+            <!-- Custom features added here -->
+          </div>
+
+          <!-- Rush Option -->
+          <div class="mt-6 pt-5 border-t border-slate-100">
+            <label class="flex items-start gap-3 cursor-pointer group">
+              <input type="checkbox" id="rushProject" class="mt-0.5 w-5 h-5 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+              <div>
+                <span class="text-sm font-medium text-slate-800 group-hover:text-indigo-600 transition">Rush project (3 days delivery)</span>
+                <p class="text-xs text-slate-500 mt-0.5">Additional ₱300 fee for priority scheduling</p>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Summary -->
+      <div class="lg:col-span-1">
+        <div class="sticky top-24 space-y-6">
+          <!-- Quote Summary Card -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <h2 class="text-lg font-semibold text-slate-900 mb-5">Quote Summary</h2>
+
+            <div class="space-y-4">
+              <div class="flex justify-between text-sm">
+                <span class="text-slate-600">Total Hours</span>
+                <span id="totalHours" class="font-medium text-slate-900">0.0 hrs</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-slate-600">Rate</span>
+                <span class="font-medium text-slate-900">₱55.00 / hour</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-slate-600">Subtotal</span>
+                <span id="subtotal" class="font-medium text-slate-900">₱0.00</span>
+              </div>
+              <div class="flex justify-between text-sm" id="rushRow" style="display: none;">
+                <span class="text-slate-600">Rush Fee</span>
+                <span class="font-medium text-amber-600">+ ₱300.00</span>
+              </div>
+              <div class="border-t border-slate-200 pt-4">
+                <div class="flex justify-between items-center">
+                  <span class="font-semibold text-slate-800">Total Amount</span>
+                  <span id="totalAmount" class="text-2xl font-bold gradient-text">₱0.00</span>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="generatePDF()" class="w-full mt-6 px-5 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold rounded-xl transition shadow-lg shadow-indigo-200 hover:shadow-xl flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Generate Quote PDF
+            </button>
+          </div>
+
+          <!-- Payment Card -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <h2 class="text-lg font-semibold text-slate-900 mb-4">Payment Method</h2>
+            <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
+              <img id="qrImage" src="https://via.placeholder.com/300x300/f1f5f9/94a3b8?text=Replace+with+Your+QR+Code" alt="Payment QR Code" class="w-full rounded-lg mb-3">
+              <div class="text-xs text-slate-500 text-center">
+                <p class="font-medium text-slate-700 mb-1">Instructions:</p>
+                <p>Replace the image src in code with your GCash/Maya/Bank QR code URL</p>
+              </div>
+            <div class="mt-4 text-xs text-slate-500 bg-amber-50 border border-amber-200 rounded-lg p-3">
+              <p><strong>Note:</strong> Payment terms: 50% upfront, 50% upon completion or as agreed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="font-semibold text-slate-900 mb-3">DevQuote Pro</h3>
+          <p class="text-sm text-slate-600">Professional web development services tailored for your business needs.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900 mb-3">Contact</h3>
+          <div class="space-y-2 text-sm text-slate-600">
+            <p>📧 your.email@domain.com</p>
+            <p>📱 +63 9XX XXX XXXX</p>
+            <p>🌐 yourwebsite.com</p>
+          </div>
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900 mb-3">Legal</h3>
+          <div class="space-y-2 text-sm text-slate-600">
+            <p>Quote valid for 14 days</p>
+            <p>Terms & conditions apply</p>
+          </div>
+        </div>
+      <div class="border-t border-slate-200 mt-8 pt-6 text-center text-xs text-slate-500">
+        © <span id="year"></span> DevQuote Pro. All rights reserved. Replace contact details in code.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Hidden PDF Template -->
+  <div id="pdfTemplate" style="position: absolute; left: -9999px; top: 0; width: 800px; background: white; padding: 40px; font-family: 'Inter', sans-serif;">
+    <div style="border-bottom: 3px solid #4f46e5; padding-bottom: 20px; margin-bottom: 30px;">
+      <h1 style="font-size: 32px; font-weight: 800; color: #4f46e5; margin: 0;">PROJECT QUOTE</h1>
+      <p style="color: #64748b; margin: 5px 0 0 0;">Quote #: <span id="pdfQuoteNumber"></span></p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+      <div>
+        <h3 style="font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; margin: 0 0 8px 0;">From</h3>
+        <p style="font-weight: 600; margin: 0;">DevQuote Pro</p>
+        <p style="margin: 4px 0; color: #475569; font-size: 14px;">your.email@domain.com</p>
+        <p style="margin: 4px 0; color: #475569; font-size: 14px;">+63 9XX XXX XXXX</p>
+      </div>
+      <div>
+        <h3 style="font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; margin: 0 0 8px 0;">Bill To</h3>
+        <p style="font-weight: 600; margin: 0;" id="pdfClientName">-</p>
+        <p style="margin: 4px 0; color: #475569; font-size: 14px;" id="pdfCompany">-</p>
+        <p style="margin: 4px 0; color: #475569; font-size: 14px;" id="pdfEmail">-</p>
+        <p style="margin: 4px 0; color: #475569; font-size: 14px;">Date: <span id="pdfDate">-</span></p>
+      </div>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+      <thead>
+        <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+          <th style="text-align: left; padding: 12px; font-size: 12px; font-weight: 600; color: #475569; text-transform: uppercase;">Feature</th>
+          <th style="text-align: center; padding: 12px; font-size: 12px; font-weight: 600; color: #475569; text-transform: uppercase;">Hours</th>
+          <th style="text-align: right; padding: 12px; font-size: 12px; font-weight: 600; color: #475569; text-transform: uppercase;">Rate</th>
+          <th style="text-align: right; padding: 12px; font-size: 12px; font-weight: 600; color: #475569; text-transform: uppercase;">Amount</th>
+        </tr>
+      </thead>
+      <tbody id="pdfFeatureList"></tbody>
+    </table>
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 30px;">
+      <div style="flex: 1;">
+        <img id="pdfQR" src="" style="width: 120px; height: 120px; border: 1px solid #e2e8f0; border-radius: 8px;" crossorigin="anonymous">
+        <p style="font-size: 12px; color: #64748b; margin-top: 8px;">Scan to Pay</p>
+      </div>
+      <div style="width: 300px;">
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px;">
+          <span style="color: #64748b;">Subtotal:</span>
+          <span style="font-weight: 500;" id="pdfSubtotal">₱0.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px;" id="pdfRushRow">
+          <span style="color: #64748b;">Rush Fee:</span>
+          <span style="font-weight: 500;" id="pdfRush">₱0.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-top: 2px solid #e2e8f0; margin-top: 8px;">
+          <span style="font-weight: 700; font-size: 16px;">Total:</span>
+          <span style="font-weight: 800; font-size: 20px; color: #4f46e5;" id="pdfTotal">₱0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid #e2e8f0;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px;">
+        <div>
+          <p style="font-size: 12px; font-weight: 600; color: #64748b; margin: 0 0 40px 0;">CLIENT SIGNATURE</p>
+          <div style="border-top: 1px solid #cbd5e1; padding-top: 8px;">
+            <p style="font-size: 12px; color: #64748b; margin: 0;">Name & Signature / Date</p>
+          </div>
+        </div>
+        <div>
+          <p style="font-size: 12px; font-weight: 600; color: #64748b; margin: 0 0 40px 0;">FREELANCER SIGNATURE</p>
+          <div style="border-top: 1px solid #cbd5e1; padding-top: 8px;">
+            <p style="font-size: 12px; color: #64748b; margin: 0;">Name & Signature / Date</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px; padding: 16px; background: #fef3c7; border-radius: 8px; font-size: 12px; color: #92400e;">
+      <strong>Terms:</strong> This quote is valid for 14 days. 50% deposit required to commence work. Final payment due upon project delivery.
+    </div>
+  </div>
+
+<script>
+  const RATE = 55;
+  const RUSH_FEE = 300;
+
+  const defaultFeatures = [
+    { id: 1, name: "Landing Page Design", hours: 8, checked: false },
+    { id: 2, name: "Responsive Mobile Layout", hours: 6, checked: false },
+    { id: 3, name: "Contact Form + Email Integration", hours: 4, checked: false },
+    { id: 4, name: "CMS/Admin Panel", hours: 12, checked: false },
+    { id: 5, name: "SEO Optimization", hours: 3, checked: false },
+    { id: 6, name: "Domain & Hosting Setup", hours: 2, checked: false },
+    { id: 7, name: "E-commerce Integration", hours: 16, checked: false },
+    { id: 8, name: "Blog System", hours: 6, checked: false }
+  ];
+
+  let customFeatures = [];
+  let featureIdCounter = 100;
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('quoteDate').valueAsDate = new Date();
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderDefaultFeatures();
+    updateCalculations();
+
+    document.getElementById('rushProject').addEventListener('change', updateCalculations);
+    ['clientName', 'companyName', 'clientEmail', 'quoteDate'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {});
+    });
+  });
+
+  function renderDefaultFeatures() {
+    const container = document.getElementById('defaultFeatures');
+    container.innerHTML = defaultFeatures.map(feature => `
+      <div class="feature-item flex items-center gap-3 p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200">
+        <input type="checkbox" id="feature-${feature.id}"
+               class="w-5 h-5 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500"
+               onchange="toggleFeature(${feature.id})"
+               ${feature.checked ? 'checked' : ''}>
+        <label for="feature-${feature.id}" class="flex-1 cursor-pointer">
+          <span class="text-sm font-medium text-slate-800">${feature.name}</span>
+        </label>
+        <div class="flex items-center gap-2">
+          <input type="number" value="${feature.hours}" min="0" step="0.5"
+                 onchange="updateFeatureHours(${feature.id}, this.value)"
+                 class="w-20 px-2.5 py-1.5 text-sm text-center bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+          <span class="text-xs text-slate-500 w-8">hrs</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function toggleFeature(id) {
+    const feature = defaultFeatures.find(f => f.id === id);
+    if (feature) {
+      feature.checked = !feature.checked;
+      updateCalculations();
+    }
+  }
+
+  function updateFeatureHours(id, hours) {
+    const feature = defaultFeatures.find(f => f.id === id);
+    if (feature) {
+      feature.hours = parseFloat(hours) || 0;
+      updateCalculations();
+    }
+  }
+
+  function addCustomFeature() {
+    const nameInput = document.getElementById('customFeatureName');
+    const hoursInput = document.getElementById('customFeatureHours');
+    const name = nameInput.value.trim();
+    const hours = parseFloat(hoursInput.value);
+
+    if (!name || !hours || hours <= 0) {
+      alert('Please enter a valid feature name and hours');
+      return;
+    }
+
+    customFeatures.push({
+      id: featureIdCounter++,
+      name: name,
+      hours: hours,
+      checked: true
+    });
+
+    nameInput.value = '';
+    hoursInput.value = '';
+    renderCustomFeatures();
+    updateCalculations();
+  }
+
+  function renderCustomFeatures() {
+    const container = document.getElementById('customFeatures');
+    container.innerHTML = customFeatures.map(feature => `
+      <div class="feature-item flex items-center gap-3 p-3 bg-indigo-50 rounded-xl border border-indigo-200">
+        <input type="checkbox" id="custom-${feature.id}"
+               class="w-5 h-5 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500"
+               checked
+               onchange="toggleCustomFeature(${feature.id})">
+        <label for="custom-${feature.id}" class="flex-1 cursor-pointer">
+          <span class="text-sm font-medium text-slate-800">${feature.name}</span>
+        </label>
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-semibold text-indigo-600">${feature.hours} hrs</span>
+          <button onclick="removeCustomFeature(${feature.id})" class="text-red-500 hover:text-red-700 p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function toggleCustomFeature(id) {
+    const feature = customFeatures.find(f => f.id === id);
+    if (feature) {
+      feature.checked = !feature.checked;
+      updateCalculations();
+    }
+  }
+
+  function removeCustomFeature(id) {
+    customFeatures = customFeatures.filter(f => f.id !== id);
+    renderCustomFeatures();
+    updateCalculations();
+  }
+
+  function updateCalculations() {
+    let totalHours = 0;
+
+    defaultFeatures.forEach(f => {
+      if (f.checked) totalHours += f.hours;
+    });
+
+    customFeatures.forEach(f => {
+      if (f.checked) totalHours += f.hours;
+    });
+
+    const subtotal = totalHours * RATE;
+    const isRush = document.getElementById('rushProject').checked;
+    const rushFee = isRush ? RUSH_FEE : 0;
+    const total = subtotal + rushFee;
+
+    document.getElementById('totalHours').textContent = totalHours.toFixed(1) + ' hrs';
+    document.getElementById('subtotal').textContent = formatPHP(subtotal);
+    document.getElementById('totalAmount').textContent = formatPHP(total);
+
+    const rushRow = document.getElementById('rushRow');
+    rushRow.style.display = isRush ? 'flex' : 'none';
+  }
+
+  function formatPHP(amount) {
+    return '₱' + amount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function generatePDF() {
+    const clientName = document.getElementById('clientName').value.trim();
+    const clientEmail = document.getElementById('clientEmail').value.trim();
+
+    if (!clientName || !clientEmail) {
+      alert('Please fill in Client Name and Email before generating PDF');
+      return;
+    }
+
+    const { jsPDF } = window.jspdf;
+
+    // Populate PDF template
+    document.getElementById('pdfQuoteNumber').textContent = 'Q-' + Date.now().toString().slice(-6);
+    document.getElementById('pdfClientName').textContent = clientName;
+    document.getElementById('pdfCompany').textContent = document.getElementById('companyName').value || '-';
+    document.getElementById('pdfEmail').textContent = clientEmail;
+    document.getElementById('pdfDate').textContent = document.getElementById('quoteDate').value || new Date().toLocaleDateString();
+
+    let totalHours = 0;
+    let subtotal = 0;
+    let featureRows = '';
+
+    defaultFeatures.forEach(f => {
+      if (f.checked) {
+        const amount = f.hours * RATE;
+        totalHours += f.hours;
+        subtotal += amount;
+        featureRows += `
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 10px 12px; font-size: 14px;">${f.name}</td>
+            <td style="padding: 10px 12px; text-align: center; font-size: 14px;">${f.hours}</td>
+            <td style="padding: 10px 12px; text-align: right; font-size: 14px;">₱55.00</td>
+            <td style="padding: 10px 12px; text-align: right; font-size: 14px; font-weight: 500;">${formatPHP(amount)}</td>
+          </tr>
+        `;
+      }
+    });
+
+    customFeatures.forEach(f => {
+      if (f.checked) {
+        const amount = f.hours * RATE;
+        totalHours += f.hours;
+        subtotal += amount;
+        featureRows += `
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 10px 12px; font-size: 14px;">${f.name}</td>
+            <td style="padding: 10px 12px; text-align: center; font-size: 14px;">${f.hours}</td>
+            <td style="padding: 10px 12px; text-align: right; font-size: 14px;">₱55.00</td>
+            <td style="padding: 10px 12px; text-align: right; font-size: 14px; font-weight: 500;">${formatPHP(amount)}</td>
+          </tr>
+        `;
+      }
+    });
+
+    document.getElementById('pdfFeatureList').innerHTML = featureRows;
+
+    const isRush = document.getElementById('rushProject').checked;
+    const rushFee = isRush ? RUSH_FEE : 0;
+    const total = subtotal + rushFee;
+
+    document.getElementById('pdfSubtotal').textContent = formatPHP(subtotal);
+    document.getElementById('pdfRushRow').style.display = isRush ? 'flex' : 'none';
+    document.getElementById('pdfRush').textContent = formatPHP(rushFee);
+    document.getElementById('pdfTotal').textContent = formatPHP(total);
+
+    // Copy QR image
+    const qrSrc = document.getElementById('qrImage').src;
+    document.getElementById('pdfQR').src = qrSrc;
+
+    // Generate PDF
+    const element = document.getElementById('pdfTemplate');
+
+    html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      logging: false
+    }).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Quote-${clientName.replace(/\s+/g, '-')}-${document.getElementById('quoteDate').value}.pdf`);
+    });
+  }
+</script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
+</body>
+</html>
